@@ -1,3 +1,10 @@
 # Aegis Console
 
-TODO: Document your project here
+How to make it work:
+
+In your root directory:
+npm install
+
+then:
+npm run dev
+
