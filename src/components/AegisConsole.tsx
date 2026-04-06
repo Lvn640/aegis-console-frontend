@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef, useCallback, KeyboardEvent } from "react";
+import axios from "axios";
 import ConsoleHeader from "./ConsoleHeader";
 import LogEntry from "./LogEntry";
 import VaultPanel from "./VaultPanel";
 import PhoneMockup from "./PhoneMockup";
 import RightPanel from "./RightPanel";
 import HistoryPanel, { HistoryEntry } from "./HistoryPanel";
+
+// API Config
+const BACKEND_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 interface LogItem {
   id: number;
@@ -56,6 +60,7 @@ const AegisConsole = () => {
   const [showPhoneNotification, setShowPhoneNotification] = useState(false);
   const [agentStatus, setAgentStatus] = useState<"locked" | "authorized">("locked");
   const [unlockedResource, setUnlockedResource] = useState<string | null>(null);
+  const [vaultKey, setVaultKey] = useState<string | null>(null);
   const [countdown, setCountdown] = useState(60);
   const feedRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -160,7 +165,7 @@ const AegisConsole = () => {
     }, 1000);
   }, []);
 
-  const runSimulation = useCallback(() => {
+  const runSimulation = useCallback(async () => {
     if (simRunning) {
       addImmediate("[WARN] Simulation already in progress. Wait for completion or type 'clear' to reset.", "amber");
       return;
@@ -177,10 +182,27 @@ const AegisConsole = () => {
     addLog("[AGENT] OpenClaw v3.2.1 initialized. Fingerprint: 0xAE91...F4D2", "green", 0);
     addLog("[INFO] Secure tunnel established. TLS 1.3 active.", "muted", 1);
     addLog("[⚠ ALERT] TOOL INTERCEPT: financial_transaction via Instagram API. Awaiting authorization...", "amber", 2);
-    addLog("[📱 PUSH] Biometric approval requested on mobile device.", "cyan", 3, () => {
-      setShowPhoneNotification(true);
-      setTimeout(() => setShowModal(true), 600);
-    });
+    
+    try {
+      addLog("[AEGIS] Triggering Auth0 CIBA Asynchronous Auth...", "cyan", 3);
+      // Trigger the backend CIBA flow
+      const response = await axios.post(`${BACKEND_URL}/agent/execute-high-stakes`);
+      
+      if (response.data.status === "success") {
+        setVaultKey(response.data.token);
+        setApproved(true);
+        addLog("[🔑 VAULT] BIOMETRIC CONFIRMED. Scoped token issued.", "purple", 0);
+        if (response.data.fallback_used) {
+          addLog("[INFO] Note: Used Management API fallback (Tenant Restricted).", "muted", 0);
+        }
+      } else {
+        addLog(`[ERR] Auth failed: ${response.data.error}`, "rose", 0);
+        setSimRunning(false);
+      }
+    } catch (err: any) {
+      addLog(`[ERR] Backend Unreachable: ${err.message}`, "rose", 0);
+      setSimRunning(false);
+    }
   }, [simRunning, addLog, addImmediate]);
 
   // Post-approval
@@ -190,13 +212,12 @@ const AegisConsole = () => {
     setShowPhoneNotification(false);
     startCountdown();
 
-    addLog("[🔑 VAULT] Approved. Scoped token issued for write:social_media.", "purple", 0);
-    addLog("[✓ DONE] Token delivered. Access window active.", "green", 0, () => {
+    addLog(`[✓ DONE] Token Delivered: ${vaultKey?.substring(0, 12)}...`, "green", 0, () => {
       setSimRunning(false);
     });
 
     return clearTimers;
-  }, [approved, addLog, startCountdown]);
+  }, [approved, addLog, startCountdown, vaultKey]);
 
   const handleApprove = () => {
     setShowModal(false);
