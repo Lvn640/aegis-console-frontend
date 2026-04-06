@@ -279,6 +279,38 @@ const AegisConsole = () => {
         addLog("[SYS] Pinging secure gateway...", "muted");
         addLog("[SYS] Reply from gateway-01.aegis.internal: latency=2ms status=OK", "green");
         break;
+      case "scan": {
+        addLog("[SCAN] Initiating perimeter scan...", "muted");
+        addLog("[SCAN] Checking firewall rules... 42 rules active.", "muted");
+        addLog("[SCAN] Port scan: 443/tcp OPEN (expected), all others FILTERED.", "green");
+        addLog("[SCAN] Intrusion detection: No anomalies in last 24h.", "green");
+        addLog("[SCAN] ✓ Perimeter secure. Threat level: LOW.", "green");
+        break;
+      }
+      case "agents":
+        addLog("[AGENTS] Registered agents:", "cyan");
+        addLog("  → OpenClaw v3.2.1   status: IDLE      scope: social_media", "muted");
+        addLog("  → SentinelAI v1.0   status: ACTIVE    scope: monitoring", "muted");
+        addLog("  → DataWeaver v2.7   status: SLEEPING  scope: analytics", "muted");
+        break;
+      case "uptime": {
+        const hrs = Math.floor(Math.random() * 200) + 50;
+        const mins = Math.floor(Math.random() * 60);
+        addLog(`[SYS] Uptime: ${hrs}h ${mins}m | Load: 0.12 0.08 0.03 | Memory: 847MB / 4096MB`, "green");
+        break;
+      }
+      case "network":
+        addLog("[NET] Active connections:", "cyan");
+        addLog("  → gateway-01.aegis.internal:443   TLS 1.3   ESTABLISHED", "muted");
+        addLog("  → vault.aegis.internal:8200       mTLS      ESTABLISHED", "muted");
+        addLog("  → monitor.aegis.internal:9090     TLS 1.3   ESTABLISHED", "muted");
+        addLog("[NET] 3 active, 0 pending, 0 failed.", "green");
+        break;
+      case "encrypt":
+        addLog("[CRYPTO] Generating 256-bit AES key...", "muted");
+        addLog("[CRYPTO] Encrypting payload: 'HELLO_AEGIS' → 0xA7F2...9B1D", "purple");
+        addLog("[CRYPTO] ✓ Encryption complete. HMAC verified.", "green");
+        break;
       case "":
         break;
       default:
