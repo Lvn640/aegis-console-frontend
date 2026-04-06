@@ -169,14 +169,11 @@ const AegisConsole = () => {
     queueRef.current = [];
     isTypingRef.current = false;
 
-    addLog("[SYS] Initiating Human-in-the-Loop security simulation...", "muted");
-    addLog("[🛡️ SECURE] OpenClaw Instance initialized in Restricted Mode. All local WebSocket handshakes disabled. Identity-Aware Proxy active.", "green", 0);
-    addLog("[INFO] Loading agent policy configuration from vault...", "muted", 1);
-    addLog("[INFO] Agent identity verified: OpenClaw v3.2.1 — fingerprint: 0xAE91...F4D2", "muted", 2);
-    addLog("[INFO] Establishing secure tunnel to API gateway... TLS 1.3 handshake complete.", "muted", 3);
-    addLog("[INFO] Monitoring agent tool calls. Threshold policy: HIGH_STAKES_FINANCIAL active.", "muted", 4);
-    addLog("[!! ALERT] [⏸️ PAUSE] TOOL INTERCEPT: Agent attempting financial_transaction via Instagram API. High-stakes threshold met. Pausing execution thread... Awaiting Out-of-Band Authorization...", "amber", 5);
-    addLog("[⏳ PENDING] [📱 Auth0 Guardian] CIBA PUSH SENT: Requesting biometric approval via registered mobile device.", "cyan", 6, () => {
+    addLog("[SYS] Initiating security simulation...", "muted");
+    addLog("[AGENT] OpenClaw v3.2.1 initialized. Fingerprint: 0xAE91...F4D2", "green", 0);
+    addLog("[INFO] Secure tunnel established. TLS 1.3 active.", "muted", 1);
+    addLog("[⚠ ALERT] TOOL INTERCEPT: financial_transaction via Instagram API. Awaiting authorization...", "amber", 2);
+    addLog("[📱 PUSH] Biometric approval requested on mobile device.", "cyan", 3, () => {
       setShowPhoneNotification(true);
       setTimeout(() => setShowModal(true), 600);
     });
