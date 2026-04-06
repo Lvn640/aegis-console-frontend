@@ -35,7 +35,12 @@ const HELP_TEXT = `Available commands:
   status    — Show current agent status
   help      — Show this help message
   whoami    — Display current identity
-  ping      — Test secure tunnel latency`;
+  ping      — Test secure tunnel latency
+  scan      — Run a security perimeter scan
+  agents    — List registered AI agents
+  uptime    — Show system uptime
+  network   — Display active connections
+  encrypt   — Encrypt a test payload`;
 
 const AegisConsole = () => {
   const [logs, setLogs] = useState<LogItem[]>([]);
