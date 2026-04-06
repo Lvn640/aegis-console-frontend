@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Shield, Check, X } from "lucide-react";
+import { Shield, Check, X, Wifi, BatteryFull, Lock, Bell, Camera, Flashlight } from "lucide-react";
 
 interface PhoneMockupProps {
   showNotification: boolean;
@@ -11,13 +11,18 @@ interface PhoneMockupProps {
 const PhoneMockup = ({ showNotification, showApproval, onApprove, onDeny }: PhoneMockupProps) => {
   const [visible, setVisible] = useState(false);
   const [time, setTime] = useState("");
+  const [date, setDate] = useState("");
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     const update = () => {
-      setTime(new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }));
+      const now = new Date();
+      setTime(now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }));
+      setDate(now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }));
+      setSeconds(now.getSeconds());
     };
     update();
-    const id = setInterval(update, 10000);
+    const id = setInterval(update, 1000);
     return () => clearInterval(id);
   }, []);
 
@@ -38,33 +43,85 @@ const PhoneMockup = ({ showNotification, showApproval, onApprove, onDeny }: Phon
         {/* Status bar */}
         <div className="flex items-center justify-between px-5 pt-7 pb-2 text-[9px] text-muted-foreground font-label">
           <span>{time}</span>
-          <div className="flex items-center gap-1">
-            <span>5G</span>
+          <div className="flex items-center gap-1.5">
+            <Wifi className="h-2.5 w-2.5 text-muted-foreground/60" />
+            <span className="text-[8px]">5G</span>
             <div className="flex items-end gap-[1px] h-2.5">
               {[40, 55, 70, 85, 100].map((h) => (
                 <div key={h} className="w-[2px] bg-muted-foreground/60 rounded-sm" style={{ height: `${h}%` }} />
               ))}
             </div>
-            <svg width="12" height="7" viewBox="0 0 12 7" className="ml-0.5">
-              <rect x="0" y="0" width="10" height="7" rx="1" className="stroke-muted-foreground/60 fill-none" strokeWidth="0.8" />
-              <rect x="1" y="1.5" width="7" height="4" rx="0.5" className="fill-primary/60" />
-              <rect x="10.5" y="2" width="1.5" height="3" rx="0.5" className="fill-muted-foreground/60" />
-            </svg>
+            <BatteryFull className="h-3 w-3 text-primary/60 ml-0.5" />
           </div>
         </div>
 
         {/* Lock screen content */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-4">
-          <div className="w-10 h-10 rounded-full border border-border/50 bg-muted/30 flex items-center justify-center">
-            <Shield className="h-5 w-5 text-primary/40" strokeWidth={1.5} />
+        <div className="flex-1 flex flex-col items-center px-4 pt-4">
+          {/* Time display */}
+          <div className="text-center mb-1">
+            <p className="text-3xl font-heading font-bold text-foreground tracking-wider" style={{ fontFamily: "'Orbitron', monospace" }}>
+              {time}
+            </p>
+            <p className="text-[9px] text-muted-foreground/60 mt-1 tracking-wide uppercase">
+              {date}
+            </p>
           </div>
-          <span className="text-[10px] text-muted-foreground/40 font-label uppercase tracking-widest">
-            Aegis Protected
-          </span>
+
+          {/* Shield icon with pulse */}
+          <div className="flex-1 flex flex-col items-center justify-center gap-2">
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full border border-primary/20 bg-primary/5 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-primary/50" strokeWidth={1.5} />
+              </div>
+              {/* Animated ring */}
+              <div
+                className="absolute inset-0 rounded-full border border-primary/20"
+                style={{
+                  animation: "pulse-glow 3s ease-in-out infinite",
+                }}
+              />
+            </div>
+            <div className="flex items-center gap-1 mt-1">
+              <Lock className="h-2.5 w-2.5 text-muted-foreground/30" />
+              <span className="text-[9px] text-muted-foreground/30 font-label uppercase tracking-[0.2em]">
+                Aegis Protected
+              </span>
+            </div>
+          </div>
+
+          {/* Fake recent notifications (idle) */}
+          {!showNotification && !showApproval && (
+            <div className="w-full space-y-1.5 mb-3 animate-fade-in">
+              <div className="glass rounded-lg px-2.5 py-1.5 flex items-center gap-2 opacity-40">
+                <Bell className="h-3 w-3 text-muted-foreground shrink-0" />
+                <div>
+                  <p className="text-[8px] text-muted-foreground/70">System • 2m ago</p>
+                  <p className="text-[9px] text-muted-foreground">All agents idle. No threats.</p>
+                </div>
+              </div>
+              <div className="glass rounded-lg px-2.5 py-1.5 flex items-center gap-2 opacity-30">
+                <Shield className="h-3 w-3 text-primary/50 shrink-0" />
+                <div>
+                  <p className="text-[8px] text-muted-foreground/70">Aegis • 15m ago</p>
+                  <p className="text-[9px] text-muted-foreground">Vault sync complete.</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom controls */}
+        <div className="flex items-center justify-between px-8 pb-1">
+          <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
+            <Flashlight className="h-3.5 w-3.5 text-muted-foreground/40" />
+          </div>
+          <div className="w-8 h-8 rounded-full bg-muted/20 flex items-center justify-center">
+            <Camera className="h-3.5 w-3.5 text-muted-foreground/40" />
+          </div>
         </div>
 
         {/* Home indicator */}
-        <div className="flex justify-center pb-2">
+        <div className="flex justify-center pb-2 pt-1">
           <div className="w-24 h-1 rounded-full bg-muted-foreground/20" />
         </div>
 
@@ -79,7 +136,7 @@ const PhoneMockup = ({ showNotification, showApproval, onApprove, onDeny }: Phon
               <div className="w-5 h-5 rounded-md bg-cyber-amber/20 flex items-center justify-center shrink-0">
                 <Shield className="h-3 w-3 text-cyber-amber" strokeWidth={2} />
               </div>
-              <span className="text-[9px] text-muted-foreground font-label uppercase tracking-wider">Auth0 Guardian</span>
+              <span className="text-[9px] text-muted-foreground font-label uppercase tracking-wider">Guardian</span>
               <span className="text-[8px] text-muted-foreground/50 ml-auto">now</span>
             </div>
             <p className="text-[11px] text-cyber-amber font-bold tracking-wide text-glow-amber">
@@ -93,7 +150,7 @@ const PhoneMockup = ({ showNotification, showApproval, onApprove, onDeny }: Phon
 
         {/* Approval modal inside phone */}
         {showApproval && (
-          <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm px-3">
+          <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm px-3 animate-fade-in">
             <div className="w-full glass rounded-xl border border-primary/30 neon-glow-green overflow-hidden">
               {/* Header */}
               <div className="flex items-center gap-2 px-3 pt-3 pb-2 border-b border-border/50">
@@ -101,7 +158,7 @@ const PhoneMockup = ({ showNotification, showApproval, onApprove, onDeny }: Phon
                   <Shield className="h-3 w-3 text-primary" strokeWidth={2} />
                 </div>
                 <span className="font-label text-[8px] uppercase tracking-[0.12em] text-muted-foreground">
-                  Auth0 Guardian
+                  Guardian
                 </span>
               </div>
 

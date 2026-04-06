@@ -186,9 +186,8 @@ const AegisConsole = () => {
     setShowPhoneNotification(false);
     startCountdown();
 
-    addLog("[🔑 VAULT] Approved. Scoped token issued for write:social_media.", "purple", 4);
-    addLog("[🗑️ CLEANUP] Ephemeral token purged. Returning to idle.", "rose", 5);
-    addLog("[🛡️ SECURE] Agent idle. All credentials destroyed.", "green", 6, () => {
+    addLog("[🔑 VAULT] Approved. Scoped token issued for write:social_media.", "purple", 0);
+    addLog("[✓ DONE] Token delivered. Access window active.", "green", 0, () => {
       setSimRunning(false);
     });
 
