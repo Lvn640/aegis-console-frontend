@@ -13,6 +13,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],
+        heading: ['"Orbitron"', '"Share Tech Mono"', 'monospace'],
+        label: ['"Share Tech Mono"', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +62,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        cyber: {
+          green: "hsl(var(--cyber-green))",
+          magenta: "hsl(var(--cyber-magenta))",
+          cyan: "hsl(var(--cyber-cyan))",
+          amber: "hsl(var(--cyber-amber))",
+          rose: "hsl(var(--cyber-rose))",
+          purple: "hsl(var(--cyber-purple))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,25 +78,34 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        blink: {
+          "50%": { opacity: "0" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "1", filter: "drop-shadow(0 0 6px currentColor)" },
+          "50%": { opacity: "0.6", filter: "drop-shadow(0 0 14px currentColor)" },
+        },
+        glitch: {
+          "0%, 100%": { transform: "translate(0)" },
+          "20%": { transform: "translate(-2px, 2px)" },
+          "40%": { transform: "translate(2px, -2px)" },
+          "60%": { transform: "translate(-1px, -1px)" },
+          "80%": { transform: "translate(1px, 1px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        blink: "blink 1s step-end infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        glitch: "glitch 0.3s ease-in-out",
       },
     },
   },
