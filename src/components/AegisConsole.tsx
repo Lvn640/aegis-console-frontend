@@ -123,7 +123,7 @@ const AegisConsole = () => {
   }, []);
 
   useEffect(() => {
-    addLog("[🛡️ AEGIS] Welcome to Aegis Secure Console v2.4.1. Type 'help' for available commands or 'simulate' to run the security demo.", "green", 0);
+    addLog("[🛡️ AEGIS] Welcome. Type 'help' or 'simulate' to begin.", "green", 0);
   }, [addLog]);
 
   const focusFeed = () => inputRef.current?.focus();
