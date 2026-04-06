@@ -123,7 +123,7 @@ const AegisConsole = () => {
   }, []);
 
   useEffect(() => {
-    addLog("[🛡️ AEGIS] Welcome to Aegis Secure Console v2.4.1. Type 'help' for available commands or 'simulate' to run the security demo.", "green", 0);
+    addLog("[🛡️ AEGIS] Welcome. Type 'help' or 'simulate' to begin.", "green", 0);
   }, [addLog]);
 
   const focusFeed = () => inputRef.current?.focus();
@@ -169,14 +169,11 @@ const AegisConsole = () => {
     queueRef.current = [];
     isTypingRef.current = false;
 
-    addLog("[SYS] Initiating Human-in-the-Loop security simulation...", "muted");
-    addLog("[🛡️ SECURE] OpenClaw Instance initialized in Restricted Mode. All local WebSocket handshakes disabled. Identity-Aware Proxy active.", "green", 0);
-    addLog("[INFO] Loading agent policy configuration from vault...", "muted", 1);
-    addLog("[INFO] Agent identity verified: OpenClaw v3.2.1 — fingerprint: 0xAE91...F4D2", "muted", 2);
-    addLog("[INFO] Establishing secure tunnel to API gateway... TLS 1.3 handshake complete.", "muted", 3);
-    addLog("[INFO] Monitoring agent tool calls. Threshold policy: HIGH_STAKES_FINANCIAL active.", "muted", 4);
-    addLog("[!! ALERT] [⏸️ PAUSE] TOOL INTERCEPT: Agent attempting financial_transaction via Instagram API. High-stakes threshold met. Pausing execution thread... Awaiting Out-of-Band Authorization...", "amber", 5);
-    addLog("[⏳ PENDING] [📱 Auth0 Guardian] CIBA PUSH SENT: Requesting biometric approval via registered mobile device.", "cyan", 6, () => {
+    addLog("[SYS] Initiating security simulation...", "muted");
+    addLog("[AGENT] OpenClaw v3.2.1 initialized. Fingerprint: 0xAE91...F4D2", "green", 0);
+    addLog("[INFO] Secure tunnel established. TLS 1.3 active.", "muted", 1);
+    addLog("[⚠ ALERT] TOOL INTERCEPT: financial_transaction via Instagram API. Awaiting authorization...", "amber", 2);
+    addLog("[📱 PUSH] Biometric approval requested on mobile device.", "cyan", 3, () => {
       setShowPhoneNotification(true);
       setTimeout(() => setShowModal(true), 600);
     });
@@ -189,9 +186,9 @@ const AegisConsole = () => {
     setShowPhoneNotification(false);
     startCountdown();
 
-    addLog("[🔑 VAULT EXCHANGE] [☁️] CIBA APPROVED. Exchanging internal JWT for scoped Instagram Access Token via Auth0 Token Vault. Token bound to write:social_media scope.", "purple", 8);
-    addLog("[🔥 SELF-DESTRUCT] [🗑️] Tool execution complete. Ephemeral Vault token purged from memory. Returning to Idle-Secure state.", "rose", 10);
-    addLog("[🛡️ SECURE] Agent returned to Idle-Secure state. All ephemeral credentials destroyed. Awaiting next instruction.", "green", 12, () => {
+    addLog("[🔑 VAULT] Approved. Scoped token issued for write:social_media.", "purple", 4);
+    addLog("[🗑️ CLEANUP] Ephemeral token purged. Returning to idle.", "rose", 5);
+    addLog("[🛡️ SECURE] Agent idle. All credentials destroyed.", "green", 6, () => {
       setSimRunning(false);
     });
 

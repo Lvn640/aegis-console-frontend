@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface LogEntryProps {
   text: string;
@@ -21,24 +21,27 @@ const LogEntry = ({ text, variant, timestamp, typewriter = true, onComplete }: L
   const [displayed, setDisplayed] = useState(typewriter ? "" : text);
   const [done, setDone] = useState(!typewriter);
 
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
+
   useEffect(() => {
     if (!typewriter) {
-      onComplete?.();
+      onCompleteRef.current?.();
       return;
     }
     let i = 0;
-    const speed = variant === "muted" ? 6 : 10;
+    const speed = variant === "muted" ? 8 : 14;
     const id = setInterval(() => {
       i++;
       setDisplayed(text.slice(0, i));
       if (i >= text.length) {
         clearInterval(id);
         setDone(true);
-        onComplete?.();
+        onCompleteRef.current?.();
       }
     }, speed);
     return () => clearInterval(id);
-  }, [text, typewriter, variant, onComplete]);
+  }, [text, typewriter, variant]);
 
   return (
     <div className="flex gap-3 py-2 px-4 border-b border-border/20 hover:bg-muted/20 transition-colors duration-100">
