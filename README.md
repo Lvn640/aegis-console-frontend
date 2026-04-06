@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# Aegis Console
 
 TODO: Document your project here

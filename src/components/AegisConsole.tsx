@@ -411,7 +411,6 @@ const AegisConsole = () => {
               autoFocus
               spellCheck={false}
             />
-            <span className="inline-block w-2 h-4 bg-primary animate-blink" />
           </div>
 
           {/* Status bar */}
