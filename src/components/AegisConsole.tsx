@@ -186,9 +186,9 @@ const AegisConsole = () => {
     setShowPhoneNotification(false);
     startCountdown();
 
-    addLog("[🔑 VAULT EXCHANGE] [☁️] CIBA APPROVED. Exchanging internal JWT for scoped Instagram Access Token via Auth0 Token Vault. Token bound to write:social_media scope.", "purple", 8);
-    addLog("[🔥 SELF-DESTRUCT] [🗑️] Tool execution complete. Ephemeral Vault token purged from memory. Returning to Idle-Secure state.", "rose", 10);
-    addLog("[🛡️ SECURE] Agent returned to Idle-Secure state. All ephemeral credentials destroyed. Awaiting next instruction.", "green", 12, () => {
+    addLog("[🔑 VAULT] Approved. Scoped token issued for write:social_media.", "purple", 4);
+    addLog("[🗑️ CLEANUP] Ephemeral token purged. Returning to idle.", "rose", 5);
+    addLog("[🛡️ SECURE] Agent idle. All credentials destroyed.", "green", 6, () => {
       setSimRunning(false);
     });
 
