@@ -94,14 +94,13 @@ const AegisConsole = () => {
   const handleLogComplete = useCallback((logId: number) => {
     setLogs((prev) => prev.map((l) => (l.id === logId ? { ...l, typing: false } : l)));
     isTypingRef.current = false;
-    // Process next in queue after a tiny pause
+    // Natural pause between lines (randomized for realism)
+    const delay = 250 + Math.random() * 350;
     setTimeout(() => {
       if (queueRef.current.length > 0) {
-        // Re-trigger processing
-        idRef.current; // just to reference
         processQueue();
       }
-    }, 80);
+    }, delay);
   }, [processQueue]);
 
   const addLog = useCallback((text: string, variant: LogItem["variant"], offsetSec: number = 0, onAdded?: () => void) => {
